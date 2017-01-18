@@ -124,7 +124,7 @@ long distance;
 void setup(){
   pinMode(back_left, OUTPUT);         //we sets up pins.
   pinMode(forward_left , OUTPUT);
-    pinMode(enable_left, OUTPUT);
+  pinMode(enable_left, OUTPUT);
   pinMode(enable_right, OUTPUT);
   pinMode(back_right,OUTPUT);
   pinMode(forward_right,OUTPUT);
@@ -198,7 +198,6 @@ long olc(int trigPin,int echoPin){
 }
 
 bool is_wall(){
-  
  bottom_mid = olc(trigPin1,echoPin1);
  top_mid = olc(trigPin2,echoPin2);
  if(bottom_mid< 20 && top_mid < 20){
@@ -224,8 +223,6 @@ void turn_right(){
       digitalWrite(back_right, LOW);    //corresponding pin which is used for right motors backward action, is adjested low boolean value
       digitalWrite(forward_left, LOW);  //corresponding pin which is used for left motors forward action, is adjested low boolean value
        digitalWrite(back_left, HIGH);  //corresponding pin which is used for left motors backward action, is adjested high boolean value
- 
-      
 }
 
 //In order to turn left, left motors move backwards and right motors move forward
@@ -248,7 +245,6 @@ void forward(){
        digitalWrite(back_left, HIGH);    //corresponding pin which is used for left motors backward action, is adjested high boolean value
   }
 
-
 //In order to stop robot, all pins are given as low value
 void stop(){
   analogWrite(enable_right, 0); 
@@ -258,7 +254,6 @@ void stop(){
       digitalWrite(forward_left, LOW);   //corresponding pin which is used for left motors forward action, is adjested low boolean value
        digitalWrite(back_left, LOW);    //corresponding pin which is used for left motors backward action, is adjested low boolean value
   }
-
 
 //In order to turn back robot turns right till getting the desired position
 void turn_back(){
@@ -276,46 +271,32 @@ void grap_all(){
     turn_back();
     return;
   }
-     down();              //else makes down the gripper 
-    delay(1000);
-      grap();         //grabs the object
-
-    delay(1000);
-   
-     up();          //lifts the object
-    delay(1000);
-      reset();        //leaves the object to bucket
-    delay(1000);
-     for(int k=0; k < 3;  k++){             //color determination runs three times to get correct value. 
-      
+  down();              //else makes down the gripper 
+  delay(1000);
+  grap();         //grabs the object
+  delay(1000);
+  up();          //lifts the object
+  delay(1000);
+  reset();        //leaves the object to bucket
+  delay(1000);
+  for(int k=0; k < 3;  k++){             //color determination runs three times to get correct value.     
       if(get_Colors() == 'r'){          //if object is red
             servo_kapak = 16;
             box.write(servo_kapak);       //servo turns ninety degrees in counter clockwise
             delay(1000);
             servo_kapak = 96;
-            box.write(servo_kapak);
-            
-          }else if(get_Colors() == 'b'){    // else if object is blue
+            box.write(servo_kapak); 
+          }
+       else if(get_Colors() == 'b'){    // else if object is blue
             servo_kapak = 176;
             box.write(servo_kapak);        //servo turns ninety degrees in counter clockwise
             delay(1000);
             servo_kapak = 96;
             box.write(servo_kapak);
           }
-          delay(1000);
-          
-    }
-    
+       delay(1000);     
+    }  
 }
-
-
-
-   
-
-  
-
- 
-
 
 void check_left(){
   Serial.print("checkleft\n");
@@ -332,27 +313,26 @@ void check_left(){
     if(is_object()){	//if an object closer than 50 cm
       Serial.print("left object");
       flag=false;
-       turn_left();		//call turn_left func to rotate to left
+      turn_left();		//call turn_left func to rotate to left
       delay(100);
       stop();
       while( 20 < olc(trigPin1,echoPin1)){	//While bottom-mid ultrasonic sensor measures shorter than 20cm
-      forward();	//Rotating to left is enough because middle sensor can see the object now. Go forward. 
-       if(is_wall()){	//Check is it a wall. If it is,
-        turn_back();	//call turn_back func to avoid having a crash
-        is_seen = true;	//make is_seen true
-        break;	//finish the while loop
+        forward();	//Rotating to left is enough because middle sensor can see the object now. Go forward. 
+        if(is_wall()){	//Check is it a wall. If it is,
+          turn_back();	//call turn_back func to avoid having a crash
+          is_seen = true;	//make is_seen true
+          break;	//finish the while loop
         }
-      Serial.println("gotoobj");	//If it is not a wall, inform user "I go to the object"
-      stop();						//call stop func to stop robot. Because grappler operation will start.
+        Serial.println("gotoobj");	//If it is not a wall, inform user "I go to the object"
+        stop();						//call stop func to stop robot. Because grappler operation will start.
       }
       if(is_seen){					
-        break;
-        }
-       if(is_wall()){	//If it is wall,
-        turn_back();	//call turn_back func to avoid having a crash
-        break;			//Break the for loop
-        }
-       
+       break;
+      }
+      if(is_wall()){	//If it is wall,
+	turn_back();	//call turn_back func to avoid having a crash
+	break;			//Break the for loop
+      }     
       grap_all();	//call grap_all func for grappler object 
       break;
     }
@@ -374,11 +354,11 @@ void check_right(){
     if(is_object()){	//if an object closer than 50 cm
       Serial.print("right object");
       flag=false;
-       turn_right();	//Rotate right 
+      turn_right();	//Rotate right 
       delay(100);
       stop();
       while( 20 < olc(trigPin1,echoPin1)){	//If bottom-mid sensor measures shorter than 20cm,
-            forward();	//Go forward to object
+       forward();	//Go forward to object
        if(is_wall()){	//If it is a wall,
          is_seen = true;//make is_seen true
          turn_back();	//call turn_back func to avoid having crash
@@ -390,9 +370,9 @@ void check_right(){
         break;
         }
        if(is_wall()){	
-			turn_back();	//call turn_back func to avoid having crash
-			break;			//break loop
-        }
+	turn_back();	//call turn_back func to avoid having crash
+	break;			//break loop
+       }
 
       grap_all();	//grappler operation performs
       break;		//break the loop
@@ -402,10 +382,7 @@ void check_right(){
 
 bool control(){
   int counter = 0;
-  
-  }
-
-
+} 
 
 void loop()
 {
@@ -413,26 +390,23 @@ void loop()
  top_mid = olc(trigPin2,echoPin2);
  right_value = olc(trigPin3,echoPin3);
  left_value = olc(trigPin4,echoPin4);
- 
+	
     if (bottom_mid<20 && bottom_mid>7){   //if the middle low sensor measure between 20 and 7 there should be something
       int counter=0;
       stop();   //it stops for 0.3 second
       delay(300);
       while(is_object()){  //sometimes ultrasonic sensors give wrong results in order to avoid this situation robot checks 5 times if it is object or not
         counter++;
-        if(counter==5){
-          
+        if(counter==5){  
          if(is_wall()){ //if it is wall it turns back
-          turn_back();
-          break;
+           turn_back();
+           break;
           }
           grap_all();  //otherwise it grabs the object
           counter = 0;
-          break;
-          
+          break;    
         }
       }
-      
     }
 
   else if (left_value < 40 && left_value > 7){ //if left sensor measures between 40 and 7 it checks the left
